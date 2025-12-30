@@ -1,10 +1,6 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local Window = Rayfield:CreateWindow({
-    Name = "👾 Cheat Menu",
-    LoadingTitle = "Loading Cheat Menu...",
-    LoadingSubtitle = "by Bobertic",
-    ConfigurationSaving = {Enabled = false}
-})
+local RayfieldLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/main/BasicData/rayfield-loader.lua'))()
+local Rayfield = RayfieldLib.Rayfield
+local Window = RayfieldLib.Window
 
 local highlights = {
     isItemHighlight = false,
@@ -59,6 +55,7 @@ local itemPrices = {
     -- Технические
     ['Flashlight'] = 0,            -- Фонарик
     ['Clipboard'] = 0,             -- Таблички о сущностях
+    ['Notes'] = 0,                 -- Записка
     ['HoldingItem'] = 0            -- Предметы, поставленные синими робатами
 }
 

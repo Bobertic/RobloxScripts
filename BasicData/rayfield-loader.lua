@@ -5,4 +5,8 @@ local Window = Rayfield:CreateWindow({
     LoadingSubtitle = "by Bobertic",
     ConfigurationSaving = {Enabled = false}
 })
+
+local LoadMiscTab = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/testo/refs/heads/main/misc-tab.lua'))()
+LoadMiscTab(Window)
+
 return {Rayfield = Rayfield, Window = Window}
