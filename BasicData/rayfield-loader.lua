@@ -6,7 +6,7 @@ local Window = Rayfield:CreateWindow({
     ConfigurationSaving = {Enabled = false}
 })
 
-local LoadMiscTab = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/testo/refs/heads/main/misc-tab.lua'))()
+local LoadMiscTab = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/main/BasicData/misc-tab.lua'))()
 LoadMiscTab(Window)
 
 return {Rayfield = Rayfield, Window = Window}
