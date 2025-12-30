@@ -68,116 +68,6 @@ local itemPrices = {
     ['HoldingItem'] = 0            -- Предметы, поставленные синими робатами
 }
 
--- Переменные для неизвестных предметов
-local UnknownItemsTab = Window:CreateTab("Unknown", nil)
-local unknownItemsList = {}
-local currentPage = 1
-local itemsPerPage = 10
-local totalUnknownItems = 0
-
--- Элементы UI для отображения неизвестных предметов
-local unknownItemsDisplay = UnknownItemsTab:CreateLabel("")
-local pageInfoLabel = UnknownItemsTab:CreateLabel("Страница: 1/1")
-local unknownItemsCountLabel = UnknownItemsTab:CreateLabel("Всего предметов: 0")
-
--- Кнопки навигации
-local prevButton = UnknownItemsTab:CreateButton({
-    Name = "← Назад",
-    Callback = function()
-        if currentPage > 1 then
-            currentPage = currentPage - 1
-            UpdateUnknownItemsDisplay()
-        end
-    end
-})
-
-local nextButton = UnknownItemsTab:CreateButton({
-    Name = "Вперед →",
-    Callback = function()
-        local maxPage = math.ceil(totalUnknownItems / itemsPerPage)
-        if currentPage < maxPage then
-            currentPage = currentPage + 1
-            UpdateUnknownItemsDisplay()
-        end
-    end
-})
-
--- Функция для обновления отображения неизвестных предметов
-local function UpdateUnknownItemsDisplay()
-    local startIndex = (currentPage - 1) * itemsPerPage + 1
-    local endIndex = math.min(startIndex + itemsPerPage - 1, totalUnknownItems)
-    
-    local displayText = ""
-    
-    for i = startIndex, endIndex do
-        local item = unknownItemsList[i]
-        if item then
-            displayText = displayText .. string.format("• [%s] | %s\n", item.name, item.location)
-            displayText = displayText .. string.format("  X: %.0f Y: %.0f Z: %.0f\n", 
-                item.position.X, item.position.Y, item.position.Z)
-            displayText = displayText .. string.format("  Расстояние: %.1fм\n\n", item.distance)
-        end
-    end
-    
-    if displayText == "" then
-        displayText = "Неизвестные предметы не найдены"
-    end
-    
-    unknownItemsDisplay:Set(displayText)
-    
-    local maxPage = math.ceil(totalUnknownItems / itemsPerPage)
-    pageInfoLabel:Set(string.format("Страница: %d/%d", currentPage, maxPage))
-    unknownItemsCountLabel:Set(string.format("Всего предметов: %d", totalUnknownItems))
-end
-
--- Функция для обновления списка неизвестных предметов
-local function UpdateUnknownItemsList()
-    local folder = game.Workspace:FindFirstChild("ItemDrops")
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local rootPart = character:FindFirstChild("HumanoidRootPart")
-    
-    unknownItemsList = {}
-    
-    if folder and rootPart then
-        for _, object in ipairs(folder:GetChildren()) do
-            if object:IsA("Model") and object.PrimaryPart then
-                local pos = object.PrimaryPart.Position
-                local name = object.Name
-                
-                if pos.Y <= 2000 and not itemPrices[name] then
-                    local distance = (pos - rootPart.Position).Magnitude
-                    local inForbidden = IsInForbiddenZone(pos)
-                    local location = inForbidden and "Лифт" or "Снаружи"
-                    
-                    if not string.find(name, 'LOCKER_ITEM') then
-                        table.insert(unknownItemsList, {
-                            name = name,
-                            location = location,
-                            position = pos,
-                            distance = distance
-                        })
-                    end
-                end
-            end
-        end
-    end
-    
-    -- Сортировка по расстоянию (от ближнего к дальнему)
-    table.sort(unknownItemsList, function(a, b)
-        return a.distance < b.distance
-    end)
-    
-    totalUnknownItems = #unknownItemsList
-    
-    -- Сброс страницы если список изменился
-    local maxPage = math.ceil(totalUnknownItems / itemsPerPage)
-    if currentPage > maxPage then
-        currentPage = math.max(1, maxPage)
-    end
-    
-    UpdateUnknownItemsDisplay()
-end
 
 local function IsInForbiddenZone(position)
     if not position then return false end
@@ -247,11 +137,15 @@ local function Eps()
     end
 end
 
+
 local function DeleteShadows()
     Lighting:ClearAllChildren()
+
     Lighting.Ambient = Color3.new(1, 1, 1)
     Lighting.ExposureCompensation = -1.5
 end
+
+
 
 local function AutomaticSettings()
     while isAutomaticSettings do
@@ -289,6 +183,7 @@ MainTab:CreateSlider({
 
 MainTab:CreateButton({Name = "Удалить тени", Callback = DeleteShadows})
 
+
 local AutomaticSettingsToggle = MainTab:CreateToggle({
     Name = "Автоматические настройки",
     CurrentValue = false,
@@ -311,6 +206,7 @@ MainTab:CreateButton({
         Rayfield:Destroy()
     end
 })
+
 
 local EpsItemsToggle = HighlightTab:CreateToggle({
     Name = "Подсветка предметов",
@@ -362,7 +258,9 @@ local ItemCountOutside = InfoTab:CreateLabel("0 предметов")
 local ItemCountLift = InfoTab:CreateLabel("0 предметов")
 local HoldingItemOutside = InfoTab:CreateLabel("0 предметов")
 
--- Основной цикл обновления информации
+InfoTab:CreateSection("Неизвестные предметы")
+local UnknownObjects = InfoTab:CreateLabel("Null")
+
 task.spawn(function()
     while true do
         if DestroyMenu then
@@ -374,7 +272,6 @@ task.spawn(function()
         local rootPart = character:FindFirstChild("HumanoidRootPart")
         local folder = game.Workspace:FindFirstChild("ItemDrops")
         
-        -- Обновление позиции
         if rootPart then
             PositionLabel:Set(string.format("X: %.0f | Y: %.0f | Z: %.0f", 
                 rootPart.Position.X, rootPart.Position.Y, rootPart.Position.Z))
@@ -386,6 +283,7 @@ task.spawn(function()
         local itemsCount_holdingitem = 0
         local counterOutside = {}
         local counterLift = {}
+        local UnknownObjectsList = {}
         
         if folder and rootPart then
             for _, object in ipairs(folder:GetChildren()) do
@@ -394,6 +292,7 @@ task.spawn(function()
                     local name = object.Name
                     if pos.Y <= 2000 then
                         local inForbidden = IsInForbiddenZone(pos)
+                        local location = inForbidden and "Lift" or "Outside"
                         
                         if inForbidden then
                             counterLift[name] = (counterLift[name] or 0) + 1
@@ -411,16 +310,41 @@ task.spawn(function()
                                 itemsCount_holdingitem = itemsCount_holdingitem + 1
                             end
                         end
+                        
+                        if not itemPrices[name] then
+                            local distance = (pos - rootPart.Position).Magnitude
+                            table.insert(UnknownObjectsList, {
+                                name = name,
+                                location = location,
+                                position = pos,
+                                distance = distance
+                            })
+                        end
+                        
                     end
                 end
             end
         end
         
-        -- Обновление Clipboard
+        local UnknownObjectsText = {}
+        for _, item in ipairs(UnknownObjectsList) do
+            if not string.find(item.name, 'LOCKER_ITEM') then
+                table.insert(UnknownObjectsText, string.format(
+                    "• [%s] | %s | X: %.0f Y: %.0f Z: %.0f | %.1fм",
+                    item.name,
+                    item.location,
+                    item.position.X,
+                    item.position.Y,
+                    item.position.Z,
+                    item.distance
+                ))
+            end
+        end
+        
         ClipboardLabel:Set(#itemsText_clipboard > 0 and table.concat(itemsText_clipboard, "\n") or "Предметы не найдены")
         HoldingItemOutside:Set(itemsCount_holdingitem > 0 and string.format("HoldingItem: %s", tostring(itemsCount_holdingitem)) or "Предметы не найдены")
+        UnknownObjects:Set(#UnknownObjectsText > 0 and table.concat(UnknownObjectsText, "\n") or "Null")
         
-        -- Обновление счетчиков предметов
         local totalOutside, countOutside = 0, 0
         for name, count in pairs(counterOutside) do
             totalOutside = totalOutside + (itemPrices[name] or 0) * count
@@ -434,9 +358,6 @@ task.spawn(function()
             countLift = countLift + count
         end
         ItemCountLift:Set(string.format("%d предмет(ов) в лифте | %.1f очков", countLift, totalLift))
-        
-        -- Обновление списка неизвестных предметов
-        UpdateUnknownItemsList()
         
         task.wait(0.2)
     end
