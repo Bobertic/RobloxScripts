@@ -44,13 +44,22 @@ local itemPrices = {
     ['FartCushion'] = 21,          -- Подушка-пердушка
     ['Scrap'] = 64,                -- Метал
     ['PoliceSiren'] = 43,          -- Поличейская сирена
-    ['BananaPeel'] = 0.2,          -- Банановая кожура
+    ['BananaPeel'] = 0,            -- Банановая кожура
     ['Battery2'] = 30,             -- Батарейка
     ['Battery'] = 90,              -- Золотая батарейка
     ['WalkieTalkie'] = 4,          -- Рация
     ['RiotShield'] = 33,           -- Щит
     ['ValuableScanner'] = 107,     -- Сканер
     ['NightvisionGoggles'] = 104,  -- Очки ночного зрения
+
+    ['Bag'] = 0, -- Рюкзак
+    ['Bag_Blue'] = 0, -- Синий рюкзак
+    ['BooksBox'] = 0, -- Ящик с книгами
+    ['GigantGear'] = 0, -- Большая шестерёнка
+    ['Cashier'] = 20, -- Кассовый аппарат
+    ['CarBattery'] = 0, -- Аккамулятор от машины
+    ['GrilledEel'] = 0, -- Суши
+    ['SchoolBook'] = 0, -- Школьная книга
 
     -- Технические
     ['Flashlight'] = 0,            -- Фонарик
