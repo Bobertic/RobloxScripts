@@ -4,7 +4,7 @@ return function(extraText)
         nameExtension = " | " .. tostring(extraText)
     end
 
-    local Rayfield = loadstring(game:HttpGet('https://test.local/div/BasicData/_IMPOTR/rayfield.lua'))()
+    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/BasicData/_IMPOTR/rayfield.lua'))()
     local Window = Rayfield:CreateWindow({
         Name = "👾 Cheat Menu" .. nameExtension,
         LoadingTitle = "Loading Cheat Menu...",

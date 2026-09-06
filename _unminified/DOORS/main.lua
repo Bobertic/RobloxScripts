@@ -1,4 +1,4 @@
-local RayfieldLib = loadstring(game:HttpGet('https://test.local/div/BasicData/rayfield-loader.lua'))()("Doors")
+local RayfieldLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/BasicData/rayfield-loader.lua'))()("Doors")
 local Rayfield = RayfieldLib.Rayfield
 local Window = RayfieldLib.Window
 
@@ -16,7 +16,7 @@ end
 
 
 local successMisc, LoadMiscTab = pcall(function()
-    return loadstring(game:HttpGet('https://test.local/div/BasicData/misc-tab.lua'))()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/BasicData/misc-tab.lua'))()
 end)
 
 local MiscTabObject
@@ -40,7 +40,7 @@ end
 
 
 local successRender, LoadRenderTab = pcall(function()
-    return loadstring(game:HttpGet('https://test.local/div/DOORS/modules/render-tab.lua'))()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/DOORS/modules/render-tab.lua'))()
 end)
 
 if successRender and type(LoadRenderTab) == "function" then
@@ -51,7 +51,7 @@ end
 
 
 local successEsp, LoadEspTab = pcall(function()
-    return loadstring(game:HttpGet('https://test.local/div/DOORS/modules/esp-tab.lua'))()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/DOORS/modules/esp-tab.lua'))()
 end)
 
 if successEsp and type(LoadEspTab) == "function" then
@@ -62,7 +62,7 @@ end
 
 
 local successMonsters, LoadMonstersTab = pcall(function()
-    return loadstring(game:HttpGet('https://test.local/div/DOORS/modules/esp-monsters-tab.lua'))()
+    return loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/DOORS/modules/esp-monsters-tab.lua'))()
 end)
 
 if successMonsters and type(LoadMonstersTab) == "function" then

@@ -1,7 +1,7 @@
 return function(Window, Rayfield)
     local ESPTab = Window:CreateTab("👁️ ESP", nil)
 
-    local Highlighter = loadstring(game:HttpGet('https://test.local/div/BasicData/HighlighterModule.lua'))()
+    local Highlighter = loadstring(game:HttpGet('https://raw.githubusercontent.com/Bobertic/RobloxScripts/refs/heads/master/_unminified/BasicData/HighlighterModule.lua'))()
 
     local Players = game:GetService("Players")
     local UserInputService = game:GetService("UserInputService")
