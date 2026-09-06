@@ -1,0 +1,1 @@
+return function(a)local b=a:CreateTab("🔗 Misc",nil)b:CreateButton({Name="Infinite Yield",Callback=function()loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()end})return b end
